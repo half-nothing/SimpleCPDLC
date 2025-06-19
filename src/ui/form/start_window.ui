@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>widget</class>
- <widget class="QWidget" name="widget">
+ <class>Start</class>
+ <widget class="QWidget" name="Start">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -75,6 +75,19 @@
      </property>
     </widget>
    </item>
+   <item row="11" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="8" column="1">
     <widget class="QCheckBox" name="remember_me">
      <property name="text">
@@ -138,19 +151,6 @@
       <size>
        <width>40</width>
        <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="11" column="1">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
       </size>
      </property>
     </spacer>

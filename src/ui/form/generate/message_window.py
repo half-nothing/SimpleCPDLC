@@ -19,15 +19,15 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QLabel, QListWidget, QListWidgetItem, QSizePolicy,
     QSpacerItem, QWidget)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(399, 329)
-        Form.setMinimumSize(QSize(399, 329))
-        self.gridLayout = QGridLayout(Form)
+class Ui_MessageWindow(object):
+    def setupUi(self, MessageWindow):
+        if not MessageWindow.objectName():
+            MessageWindow.setObjectName(u"MessageWindow")
+        MessageWindow.resize(399, 329)
+        MessageWindow.setMinimumSize(QSize(399, 329))
+        self.gridLayout = QGridLayout(MessageWindow)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.message_list = QFrame(Form)
+        self.message_list = QFrame(MessageWindow)
         self.message_list.setObjectName(u"message_list")
         self.message_list.setMaximumSize(QSize(150, 16777215))
         self.message_list.setFrameShape(QFrame.Shape.StyledPanel)
@@ -45,7 +45,7 @@ class Ui_Form(object):
 
         self.gridLayout.addWidget(self.message_list, 0, 0, 1, 1)
 
-        self.frame_2 = QFrame(Form)
+        self.frame_2 = QFrame(MessageWindow)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Shadow.Raised)
@@ -55,6 +55,7 @@ class Ui_Form(object):
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.label_2 = QLabel(self.frame_2)
         self.label_2.setObjectName(u"label_2")
+        self.label_2.setMaximumSize(QSize(80, 16777215))
 
         self.gridLayout_2.addWidget(self.label_2, 2, 0, 1, 1)
 
@@ -73,18 +74,20 @@ class Ui_Form(object):
 
         self.gridLayout_2.addItem(self.verticalSpacer, 4, 0, 1, 2)
 
-        self.from = QLabel(self.frame_2)
-        self.from.setObjectName(u"from")
+        self.message_from = QLabel(self.frame_2)
+        self.message_from.setObjectName(u"message_from")
 
-        self.gridLayout_2.addWidget(self.from, 0, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.message_from, 0, 1, 1, 1)
 
         self.label = QLabel(self.frame_2)
         self.label.setObjectName(u"label")
+        self.label.setMaximumSize(QSize(80, 16777215))
 
         self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
 
         self.label_1 = QLabel(self.frame_2)
         self.label_1.setObjectName(u"label_1")
+        self.label_1.setMaximumSize(QSize(80, 16777215))
 
         self.gridLayout_2.addWidget(self.label_1, 1, 0, 1, 1)
 
@@ -97,18 +100,18 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.frame_2, 0, 1, 1, 1)
 
 
-        self.retranslateUi(Form)
+        self.retranslateUi(MessageWindow)
 
-        QMetaObject.connectSlotsByName(Form)
+        QMetaObject.connectSlotsByName(MessageWindow)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Message Window", None))
-        self.label_2.setText(QCoreApplication.translate("Form", u"Content:", None))
-        self.content.setText(QCoreApplication.translate("Form", u"----", None))
-        self.to.setText(QCoreApplication.translate("Form", u"----", None))
-        self.from.setText(QCoreApplication.translate("Form", u"----", None))
-        self.label.setText(QCoreApplication.translate("Form", u"From:", None))
-        self.label_1.setText(QCoreApplication.translate("Form", u"To:", None))
+    def retranslateUi(self, MessageWindow):
+        MessageWindow.setWindowTitle(QCoreApplication.translate("MessageWindow", u"Message Window", None))
+        self.label_2.setText(QCoreApplication.translate("MessageWindow", u"Content:", None))
+        self.content.setText(QCoreApplication.translate("MessageWindow", u"----", None))
+        self.to.setText(QCoreApplication.translate("MessageWindow", u"----", None))
+        self.message_from.setText(QCoreApplication.translate("MessageWindow", u"----", None))
+        self.label.setText(QCoreApplication.translate("MessageWindow", u"From:", None))
+        self.label_1.setText(QCoreApplication.translate("MessageWindow", u"To:", None))
     # retranslateUi
 

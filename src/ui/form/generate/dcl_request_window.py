@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'dcl_request.ui'
+## Form generated from reading UI file 'dcl_request_window.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
