@@ -88,3 +88,4 @@ class Config(BaseConfig):
 
 
 config = Config()
+config.load_config()

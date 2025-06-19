@@ -18,6 +18,7 @@ class LogHandler(logging.Handler):
 def logger_init() -> None:
     check_directory(join(getcwd(), "logs"), create_if_not_exist=True)
 
+    print(config)
     log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</> <light-red>|</> "
                   "<yellow>{thread:<5}</> <light-red>|</> "
                   "<magenta>{elapsed}</> <light-red>|</> "

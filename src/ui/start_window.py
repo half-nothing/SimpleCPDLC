@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import QWidget
+from loguru import logger
 
 from .form.generate.start_window import Ui_Start
 from ..config import config
 from ..cpdlc import cpdlc_manager
-from ..utils import logger
 
 
 class StartWindow(QWidget, Ui_Start):

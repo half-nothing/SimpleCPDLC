@@ -1,4 +1,3 @@
-from asyncio import run
 from threading import Thread
 from typing import Callable, Optional
 

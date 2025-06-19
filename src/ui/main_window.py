@@ -1,8 +1,5 @@
-import typing
-
-from PySide6.QtCore import QPoint, QRect
-from PySide6.QtGui import QBitmap, QPaintDevice, QPainter, QPolygon, QRegion
-from PySide6.QtWidgets import QMainWindow, QWidget
+from PySide6.QtWidgets import QMainWindow
+from python_cpdlc import Network
 
 from .atis_window import ATISWindow
 from .cpdlc_connect_window import CPDLCConnectWindow
@@ -12,8 +9,6 @@ from .meter_window import MeterWindow
 from .start_window import StartWindow
 from .telex_message_window import TelexMessageWindow
 from ..config import config
-from python_cpdlc import Network
-
 from ..cpdlc import cpdlc_manager
 
 

@@ -1,4 +1,5 @@
 from os.path import expandvars, join
+
 from .utils.version import Version
 
 config_version: Version = Version([1, 0, 0])
