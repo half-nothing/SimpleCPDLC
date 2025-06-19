@@ -1,7 +1,9 @@
 from datetime import datetime
+from threading import Semaphore
 
-from PySide6.QtCore import QModelIndex
+from PySide6.QtCore import QModelIndex, QTimer, QUrl
 from PySide6.QtGui import QBrush, QColor, QStandardItem, QStandardItemModel, Qt
+from PySide6.QtMultimedia import QSoundEffect
 from PySide6.QtWidgets import QPushButton, QStyledItemDelegate, QTableView, QWidget
 from python_cpdlc import AcarsMessage, CPDLCMessage, MessageDirection, PacketType, ReplyTag
 
@@ -54,6 +56,10 @@ class MessageWindow(QWidget, Ui_MessageWindow):
         self.delegate = RowColorDelegate(self.messages, 2)
         self.messages.setItemDelegate(self.delegate)
         cpdlc_manager.add_create_callback(self.cpdlc_client_create_callback)
+        self.sound = QSoundEffect()
+        self.sound_playing = Semaphore(1)
+        self.sound.setSource(QUrl("qrc:/sound/notify"))
+        self.sound.setVolume(1)
 
     def cpdlc_client_create_callback(self):
         cpdlc_manager.cpdlc.add_message_receiver_callback(self.receive_message)
@@ -85,6 +91,10 @@ class MessageWindow(QWidget, Ui_MessageWindow):
         self.model.insertRow(0, item)
 
     def receive_message(self, message: AcarsMessage):
+        self.sound_playing.acquire()
+        if not self.sound.isPlaying():
+            self.sound.play()
+        self.sound_playing.release()
         item = [QStandardItem("↓"), QStandardItem(message.timestamp.strftime("%H:%M:%S")), MessageItem(message)]
         item[0].setData(Qt.AlignmentFlag.AlignCenter, Qt.ItemDataRole.TextAlignmentRole)
         item[1].setData(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft | Qt.TextFlag.TextWordWrap,
