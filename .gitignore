@@ -3,3 +3,6 @@
 config/
 .pdm-python
 test*
+*.spec
+build/
+dist/

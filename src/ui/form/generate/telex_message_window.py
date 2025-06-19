@@ -62,11 +62,11 @@ class Ui_Telex(object):
 
         self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
 
-        self.pushButton = QPushButton(Telex)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMaximumSize(QSize(150, 16777215))
+        self.send = QPushButton(Telex)
+        self.send.setObjectName(u"send")
+        self.send.setMaximumSize(QSize(150, 16777215))
 
-        self.gridLayout.addWidget(self.pushButton, 5, 2, 1, 1)
+        self.gridLayout.addWidget(self.send, 5, 2, 1, 1)
 
         self.target_station = QLineEdit(Telex)
         self.target_station.setObjectName(u"target_station")
@@ -96,7 +96,7 @@ class Ui_Telex(object):
         self.label_2.setText(QCoreApplication.translate("Telex", u"Callsign:", None))
         self.label.setText(QCoreApplication.translate("Telex", u"Telex Message Sender", None))
         self.label_3.setText(QCoreApplication.translate("Telex", u"Telex Content:", None))
-        self.pushButton.setText(QCoreApplication.translate("Telex", u"Send", None))
+        self.send.setText(QCoreApplication.translate("Telex", u"Send", None))
         self.label_1.setText(QCoreApplication.translate("Telex", u"Target Station:", None))
     # retranslateUi
 

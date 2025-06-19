@@ -112,8 +112,11 @@ class Ui_Start(object):
     def retranslateUi(self, Start):
         Start.setWindowTitle(QCoreApplication.translate("Start", u"SimpleCPDLC", None))
         self.start.setText(QCoreApplication.translate("Start", u"Start", None))
+        self.callsign.setPlaceholderText(QCoreApplication.translate("Start", u"Please enter your callsign", None))
         self.label_3.setText(QCoreApplication.translate("Start", u"HoppieCode", None))
         self.remember_me.setText(QCoreApplication.translate("Start", u"Remember me", None))
+        self.email.setPlaceholderText(QCoreApplication.translate("Start", u"Please enter your email", None))
+        self.hoppie_code.setPlaceholderText(QCoreApplication.translate("Start", u"Please enter your hoppie code", None))
         self.label.setText(QCoreApplication.translate("Start", u"SimpleCPDLC", None))
         self.label_1.setText(QCoreApplication.translate("Start", u"Callsign", None))
         self.label_2.setText(QCoreApplication.translate("Start", u"Email", None))

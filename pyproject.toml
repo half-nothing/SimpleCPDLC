@@ -5,7 +5,7 @@ description = "A CPDLC client for flight similation"
 authors = [
     {name = "Half_nothing", email = "Half_nothing@163.com"},
 ]
-dependencies = ["python-cpdlc>=1.0.1", "pyside6>=6.9.1"]
+dependencies = ["pyside6>=6.9.1", "pyinstaller>=6.14.1", "python-cpdlc>=1.0.2"]
 requires-python = "==3.12.*"
 readme = "README.md"
 license = {text = "GPL-3.0-or-later"}

@@ -10,11 +10,9 @@ def main() -> None:
     logger.info("Application started")
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create("light fusion"))
-    application = MainWindow()
-    application.show()
+    MainWindow()
     exit(app.exec())
 
 
 if __name__ == '__main__':
     main()
-

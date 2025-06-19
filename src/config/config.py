@@ -14,7 +14,7 @@ from ..utils.file_utils import check_directory
 class BaseConfig(ABC):
     @property
     @abstractmethod
-    def default_config(self) -> dict:
+    def config(self) -> dict:
         raise NotImplementedError
 
     @property
@@ -32,13 +32,20 @@ class BaseConfig(ABC):
         if Path(file_path).is_file():
             self.parse_config(load(open(file_path, "r", encoding="utf-8")))
         else:
-            dump(self.default_config, open(file_path, "w", encoding="utf-8"))
+            self.save_config()
+
+    def save_config(self) -> None:
+        check_directory(config_path, create_if_not_exist=True)
+        file_path = join(config_path, self.config_file_name)
+        dump(self.config, open(file_path, "w", encoding="utf-8"), indent=4)
 
 
 class Config(BaseConfig):
     config_version: str = "1.0.0"
-    database_name: str = "database.db"
-    debug_mode: bool = True
+    remember_me: bool = False
+    callsign: str = ""
+    email: str = ""
+    hoppie_code: str = ""
     log_level: str = "TRACE"
 
     def __init__(self):
@@ -64,13 +71,20 @@ class Config(BaseConfig):
                 f"Config version not match! Require {config_version} but got {version}")
 
     @property
-    def default_config(self) -> dict:
-        return {
+    def config(self) -> dict:
+        data = {
             "config_version": self.config_version,
-            "database_name": self.database_name,
-            "debug_mode": self.debug_mode,
+            "remember_me": self.remember_me,
+            "callsign": self.callsign,
+            "email": self.email,
+            "hoppie_code": self.hoppie_code,
             "log_level": self.log_level
         }
+        if not data["remember_me"]:
+            data["callsign"] = ""
+            data["email"] = ""
+            data["hoppie_code"] = ""
+        return data
 
 
 config = Config()
