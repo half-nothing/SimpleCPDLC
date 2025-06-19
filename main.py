@@ -13,7 +13,7 @@ def main() -> None:
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create("light fusion"))
     MainWindow()
-    exit(app.exec())
+    sys.exit(app.exec())
 
 
 if __name__ == '__main__':

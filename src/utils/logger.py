@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from os import getcwd
 from os.path import join
-from sys import stdout
+from sys import stdout, exit
 
 from loguru import logger
 
@@ -18,7 +18,6 @@ class LogHandler(logging.Handler):
 def logger_init() -> None:
     check_directory(join(getcwd(), "logs"), create_if_not_exist=True)
 
-    print(config)
     log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</> <light-red>|</> "
                   "<yellow>{thread:<5}</> <light-red>|</> "
                   "<magenta>{elapsed}</> <light-red>|</> "
@@ -27,9 +26,8 @@ def logger_init() -> None:
                   "<light-red>-</> <level>{message}</>")
     logger.debug(f"Change logger level to {config.log_level.upper()}")
     logger.remove()
-    logger.add(stdout,
-               format=log_format,
-               level=config.log_level.upper())
+    if config.debug_mode:
+        logger.add(stdout, format=log_format, level=config.log_level.upper())
     logger.add(join(getcwd(), f"./logs/output_{datetime.strftime(datetime.now(), '%Y-%m-%d')}.log"),
                format=log_format, rotation="00:00", compression="zip",
                level=config.log_level.upper())

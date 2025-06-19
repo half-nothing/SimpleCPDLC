@@ -47,6 +47,7 @@ class Config(BaseConfig):
     email: str = ""
     hoppie_code: str = ""
     log_level: str = "TRACE"
+    debug_mode: bool = False
 
     def __init__(self):
         pass
@@ -78,7 +79,8 @@ class Config(BaseConfig):
             "callsign": self.callsign,
             "email": self.email,
             "hoppie_code": self.hoppie_code,
-            "log_level": self.log_level
+            "log_level": self.log_level,
+            "debug_mode": self.debug_mode
         }
         if not data["remember_me"]:
             data["callsign"] = ""
