@@ -1,9 +1,12 @@
+from PySide6.QtCore import QUrl, Qt
+from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QWidget
 from loguru import logger
 
 from .form.generate.start_window import Ui_Start
 from ..config import config
 from ..cpdlc import cpdlc_manager
+from ..meta import app_title
 
 
 class StartWindow(QWidget, Ui_Start):
@@ -12,6 +15,11 @@ class StartWindow(QWidget, Ui_Start):
         self.setupUi(self)
         self.parent = parent
         self.start.clicked.connect(self.start_cpdlc)
+        self.setWindowTitle(app_title)
+        self.register_label.setTextFormat(Qt.TextFormat.RichText)
+        self.register_label.setText('You dont have one? <a href="https://www.hoppie.nl/acars/system/register.html">Register now!</a>')
+        self.register_label.setOpenExternalLinks(False)
+        self.register_label.linkActivated.connect(self.open_website)
 
     def show(self, /):
         if config.remember_me:
@@ -20,6 +28,9 @@ class StartWindow(QWidget, Ui_Start):
             self.hoppie_code.setText(config.hoppie_code)
             self.remember_me.setChecked(True)
         super().show()
+
+    def open_website(self, url: str):
+        QDesktopServices.openUrl(QUrl(url))
 
     def start_cpdlc(self):
         callsign = self.callsign.text()

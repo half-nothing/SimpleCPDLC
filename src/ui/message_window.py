@@ -10,6 +10,7 @@ from python_cpdlc import AcarsMessage, CPDLCMessage, MessageDirection, PacketTyp
 from .form.generate.message_window import Ui_MessageWindow
 from ..config import config
 from ..cpdlc import cpdlc_manager
+from ..meta import app_title
 
 
 class MessageItem(QStandardItem):
@@ -60,6 +61,7 @@ class MessageWindow(QWidget, Ui_MessageWindow):
         self.sound_playing = Semaphore(1)
         self.sound.setSource(QUrl("qrc:/sound/notify"))
         self.sound.setVolume(1)
+        self.setWindowTitle(app_title)
 
     def cpdlc_client_create_callback(self):
         cpdlc_manager.cpdlc.add_message_receiver_callback(self.receive_message)

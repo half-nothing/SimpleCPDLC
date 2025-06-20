@@ -1,15 +1,22 @@
 [project]
 name = "SimpleCPDLC"
-version = "0.1.0"
+version = "0.1.1"
 description = "A CPDLC client for flight similation"
 authors = [
     {name = "Half_nothing", email = "Half_nothing@163.com"},
 ]
-dependencies = ["pyside6>=6.9.1", "pyinstaller>=6.14.1", "python-cpdlc>=1.0.2"]
+dependencies = [
+    "pyside6>=6.9.1",
+    "python-cpdlc>=1.2.1"
+]
 requires-python = "==3.12.*"
 readme = "README.md"
 license = {text = "GPL-3.0-or-later"}
 
+[project.optional-dependencies]
+build = [
+    "Nuitka>=2.7.10",
+]
 
 [tool.pdm]
 distribution = false
