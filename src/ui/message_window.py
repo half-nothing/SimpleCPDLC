@@ -1,7 +1,8 @@
 from datetime import datetime
 from threading import Semaphore
+from typing import Optional
 
-from PySide6.QtCore import QModelIndex, QTimer, QUrl
+from PySide6.QtCore import QModelIndex, QUrl
 from PySide6.QtGui import QBrush, QColor, QStandardItem, QStandardItemModel, Qt
 from PySide6.QtMultimedia import QSoundEffect
 from PySide6.QtWidgets import QPushButton, QStyledItemDelegate, QTableView, QWidget
@@ -9,7 +10,7 @@ from python_cpdlc import AcarsMessage, CPDLCMessage, MessageDirection, PacketTyp
 
 from .form.generate.message_window import Ui_MessageWindow
 from ..config import config
-from ..cpdlc import cpdlc_manager
+from ..manager import cpdlc_manager
 from ..meta import app_title
 
 
@@ -36,10 +37,10 @@ class RowColorDelegate(QStyledItemDelegate):
         if decision_index.isValid():
             data = decision_index.data(Qt.ItemDataRole.UserRole + 1)
             if isinstance(data, CPDLCMessage):
-                if data.replay_type in [ReplyTag.WILCO_UNABLE,
-                                        ReplyTag.AFFIRM_NEGATIVE,
-                                        ReplyTag.ROGER]:
-                    if data.replied:
+                if data.reply_type in [ReplyTag.WILCO_UNABLE,
+                                       ReplyTag.AFFIRM_NEGATIVE,
+                                       ReplyTag.ROGER]:
+                    if data.has_replied:
                         option.backgroundBrush = QBrush(QColor(129, 212, 250))
                     else:
                         option.backgroundBrush = QBrush(QColor(129, 199, 132))
@@ -47,25 +48,25 @@ class RowColorDelegate(QStyledItemDelegate):
 
 class MessageWindow(QWidget, Ui_MessageWindow):
     def __init__(self, parent=None):
-        super().__init__()
+        super().__init__(parent)
         self.setupUi(self)
         self.reply_buttons = []
         self.model = QStandardItemModel()
         self.setupTable()
         self.message_details.hide()
         self.close_btn.clicked.connect(self.message_details.hide)
+        self.delete_btn.setEnabled(False)
+        self.delete_btn.clicked.connect(self.delete_message)
         self.delegate = RowColorDelegate(self.messages, 2)
         self.messages.setItemDelegate(self.delegate)
-        cpdlc_manager.add_create_callback(self.cpdlc_client_create_callback)
         self.sound = QSoundEffect()
         self.sound_playing = Semaphore(1)
+        self.current_index: Optional[QModelIndex] = None
         self.sound.setSource(QUrl("qrc:/sound/notify"))
         self.sound.setVolume(1)
         self.setWindowTitle(app_title)
-
-    def cpdlc_client_create_callback(self):
-        cpdlc_manager.cpdlc.add_message_receiver_callback(self.receive_message)
         cpdlc_manager.cpdlc.add_message_sender_callback(self.send_message)
+        cpdlc_manager.cpdlc.add_message_receiver_callback(self.receive_message)
 
     def setupTable(self):
         self.model.setHorizontalHeaderLabels(["Dir", "Time", "Message"])
@@ -83,6 +84,12 @@ class MessageWindow(QWidget, Ui_MessageWindow):
                 selection-color: black;
             }
         """)
+
+    def delete_message(self):
+        if self.current_index is not None:
+            self.model.removeRow(self.current_index.row())
+        self.delete_btn.setEnabled(False)
+        self.message_details.hide()
 
     def send_message(self, station: str, message: str):
         item = [QStandardItem("↑"), QStandardItem(datetime.now().strftime("%H:%M:%S")),
@@ -106,18 +113,19 @@ class MessageWindow(QWidget, Ui_MessageWindow):
     def on_message_selected(self, index: QModelIndex):
         data = index.data(Qt.ItemDataRole.UserRole + 1)
         if isinstance(data, AcarsMessage):
-            self.message_details.show()
+            self.current_index = None
+            self.delete_btn.setEnabled(False)
             if data.direction == MessageDirection.IN:
-                self.message_from.setText(data.station)
+                self.message_from.setText(data.target_station)
                 self.to.setText(config.callsign)
             elif data.direction == MessageDirection.OUT:
                 self.message_from.setText(config.callsign)
-                self.to.setText(data.station)
+                self.to.setText(data.target_station)
             self.content.setText(data.message)
             if isinstance(data, CPDLCMessage):
                 self.clear_reply_button()
-                if data.request_for_reply and not data.replied:
-                    match data.replay_type:
+                if data.request_for_reply and not data.has_replied:
+                    match data.reply_type:
                         case ReplyTag.WILCO_UNABLE:
                             wilco_button = QPushButton("WILCO")
                             wilco_button.clicked.connect(lambda: self.reply_message(data, True))
@@ -143,6 +151,13 @@ class MessageWindow(QWidget, Ui_MessageWindow):
                             self.reply_buttons.append(roger_button)
                         case _:
                             raise ValueError("Unknown replay type")
+                else:
+                    self.current_index = index
+                    self.delete_btn.setEnabled(True)
+            else:
+                self.current_index = index
+                self.delete_btn.setEnabled(True)
+            self.message_details.show()
         else:
             self.message_details.hide()
 

@@ -3,11 +3,11 @@ from PySide6.QtWidgets import QMessageBox, QWidget
 
 from .form.generate.telex_message_window import Ui_Telex
 from ..config import config
-from ..cpdlc import cpdlc_manager
+from ..manager import cpdlc_manager
 
 
 class TelexMessageWindow(QWidget, Ui_Telex):
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.send.clicked.connect(self.send_telex)

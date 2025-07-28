@@ -6,11 +6,11 @@ from PySide6.QtWidgets import QMessageBox, QTableView, QWidget
 from python_cpdlc import InfoType
 
 from .form.generate.meter_window import Ui_Meter
-from ..cpdlc import cpdlc_manager
+from ..manager import cpdlc_manager
 
 
 class MeterWindow(QWidget, Ui_Meter):
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.send.clicked.connect(self.query_meter)

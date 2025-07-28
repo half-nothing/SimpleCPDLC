@@ -4,5 +4,6 @@
     </qresource>
     <qresource prefix="icon">
         <file alias="icon">icon/favicon.ico</file>
+        <file alias="settings">icon/setting.png</file>
     </qresource>
 </RCC>

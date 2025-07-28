@@ -3,10 +3,11 @@ from enum import Enum
 
 from PySide6.QtGui import QStandardItem, QStandardItemModel, Qt
 from PySide6.QtWidgets import QMessageBox, QTableView, QWidget
-from python_cpdlc import AcarsMessage, InfoType
+from python_cpdlc.enums import InfoType
+from python_cpdlc.cpdlc_message import AcarsMessage
 
 from .form.generate.atis_window import Ui_ATIS
-from ..cpdlc import cpdlc_manager
+from ..manager import cpdlc_manager
 
 
 class Platform(Enum):
@@ -16,7 +17,7 @@ class Platform(Enum):
 
 
 class ATISWindow(QWidget, Ui_ATIS):
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
         self.setupUi(self)
         for platform in Platform:

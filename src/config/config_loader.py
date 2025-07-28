@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from json import dump, load
 from os.path import join
 from pathlib import Path
+from typing import Callable
 
 from loguru import logger
 
@@ -46,14 +47,24 @@ class Config(BaseConfig):
     callsign: str = ""
     email: str = ""
     hoppie_code: str = ""
-    log_level: str = "TRACE"
+    simbrief_id: str = ""
+    log_level: str = "INFO"
     debug_mode: bool = False
-
-    def __init__(self):
-        pass
+    _config_save_callbacks: list[Callable[[], None]] = []
 
     def parse_config(self, data: dict) -> None:
         self.__dict__ = data
+
+    def add_config_save_callback(self, callback: Callable[[], None]) -> None:
+        self._config_save_callbacks.append(callback)
+
+    def save_callback(self) -> None:
+        for callback in self._config_save_callbacks:
+            callback()
+
+    def save_config(self) -> None:
+        super().save_config()
+        self.save_callback()
 
     @property
     def config_file_name(self) -> str:
@@ -79,6 +90,7 @@ class Config(BaseConfig):
             "callsign": self.callsign,
             "email": self.email,
             "hoppie_code": self.hoppie_code,
+            "simbrief_id": self.simbrief_id,
             "log_level": self.log_level,
             "debug_mode": self.debug_mode
         }

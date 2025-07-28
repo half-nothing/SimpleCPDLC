@@ -1,4 +1,3 @@
-import logging
 from datetime import datetime
 from os import getcwd
 from os.path import join
@@ -8,11 +7,6 @@ from loguru import logger
 
 from .file_utils import check_directory
 from ..config import config
-
-
-class LogHandler(logging.Handler):
-    def emit(self, record):
-        logger.log(record.levelname, record.getMessage())
 
 
 def logger_init() -> None:
@@ -36,8 +30,3 @@ def logger_init() -> None:
                    format=log_format, rotation="00:00", compression="zip",
                    level="TRACE")
     logger.add(lambda _: exit(-1), level="CRITICAL")
-
-    logging.basicConfig(
-        level=logging.DEBUG if config.log_level.upper() == "TRACE" else config.log_level.upper(),
-        handlers=[])
-    logging.getLogger().addHandler(LogHandler())

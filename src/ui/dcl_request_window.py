@@ -3,16 +3,21 @@ from PySide6.QtWidgets import QMessageBox, QWidget
 
 from .form.generate.dcl_request_window import Ui_DCL
 from ..config import config
-from ..cpdlc import cpdlc_manager
+from ..manager import cpdlc_manager, flight_plan_manager
 
 
 class DCLRequestWindow(QWidget, Ui_DCL):
-    def __init__(self, parent=None):
+    def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.send.clicked.connect(self.send_request)
 
     def show(self, /):
+        if flight_plan_manager.flight_plan:
+            plan = flight_plan_manager.flight_plan
+            self.dep.setText(plan.dep)
+            self.dest.setText(plan.arr)
+            self.aircraft_type.setText(plan.aircraft)
         self.callsign.setText(config.callsign)
         super().show()
 
