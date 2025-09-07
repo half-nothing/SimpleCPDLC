@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMainWindow, QMessageBox
 from loguru import logger
 from python_cpdlc import NetworkSwitchError
-from python_cpdlc.enums import Network
+from python_cpdlc.enums import ConnectionState, Network
 
 from .atis_window import ATISWindow
 from .config_window import ConfigWindow
@@ -79,6 +79,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.page_tab.setTabEnabled(1, False)
         self.callsign.setText(config.callsign)
         self.network.setText(cpdlc_manager.cpdlc.network.value)
+        self.network_select.setCurrentText(cpdlc_manager.cpdlc.network.value)
         self.acars_server_url.setText(cpdlc_manager.cpdlc.acars_url)
         super().show()
 
@@ -97,7 +98,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.dcl_window.show()
 
     def show_cpdlc_logon_window(self):
-        if cpdlc_manager.cpdlc.cpdlc_connect:
+        if cpdlc_manager.cpdlc.cpdlc_connection_status == ConnectionState.CONNECTED or cpdlc_manager.cpdlc.cpdlc_connection_status == ConnectionState.CONNECTING:
             cpdlc_manager.cpdlc.cpdlc_logout()
         else:
             self.cpdlc_logon_window.show()
